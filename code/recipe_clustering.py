@@ -6,7 +6,7 @@ Plot with bokeh interactive plotting
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-%matplotlib inline
+#%matplotlib inline
 import seaborn as sns
 from scipy.spatial.distance import pdist, squareform
 from sklearn.manifold import MDS, TSNE
@@ -24,7 +24,7 @@ def tsne_cluster_cuisine(df,sublist):
         df_sub = pd.concat([df_sub, temp],axis=0,ignore_index=True)
         lenlist.append(df_sub.shape[0])
     df_X = df_sub.drop(['cuisine','recipeName'],axis=1)
-    print df_X.shape, lenlist
+    print(df_X.shape, lenlist)
 
     dist = squareform(pdist(df_X, metric='cosine'))
     tsne = TSNE(metric='precomputed').fit_transform(dist)
@@ -46,7 +46,7 @@ def plot_bokeh(df,sublist,filename):
         df_sub = pd.concat([df_sub, temp],axis=0,ignore_index=True)
         lenlist.append(df_sub.shape[0])
     df_X = df_sub.drop(['cuisine','recipeName'],axis=1)
-    print df_X.shape, lenlist
+    print(df_X.shape, lenlist)
 
     dist = squareform(pdist(df_X, metric='cosine'))
     tsne = TSNE(metric='precomputed').fit_transform(dist)
