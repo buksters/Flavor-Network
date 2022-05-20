@@ -6,7 +6,7 @@ Plot with bokeh interactive plotting
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-#%matplotlib inline
+# %matplotlib inline
 import seaborn as sns
 from scipy.spatial.distance import pdist, squareform
 from sklearn.manifold import MDS, TSNE
@@ -15,7 +15,7 @@ from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool
 
 #take some regional cuisines, tsne clustering, and plotting
-def tsne_cluster_cuisine(df,sublist):
+def tsne_cluster_cuisine(df,sublist,test=None):
     lenlist=[0]
     df_sub = df[df['cuisine']==sublist[0]]
     lenlist.append(df_sub.shape[0])
@@ -24,16 +24,20 @@ def tsne_cluster_cuisine(df,sublist):
         df_sub = pd.concat([df_sub, temp],axis=0,ignore_index=True)
         lenlist.append(df_sub.shape[0])
     df_X = df_sub.drop(['cuisine','recipeName'],axis=1)
-    print(df_X.shape, lenlist)
+    print ('testing', df_X.shape, lenlist)
 
     dist = squareform(pdist(df_X, metric='cosine'))
     tsne = TSNE(metric='precomputed').fit_transform(dist)
+    print("TSNE: ", tsne)
 
     palette = sns.color_palette("hls", len(sublist))
     plt.figure(figsize=(10,10))
     for i,cuisine in enumerate(sublist):
         plt.scatter(tsne[lenlist[i]:lenlist[i+1],0],\
         tsne[lenlist[i]:lenlist[i+1],1],c=palette[i],label=sublist[i])
+    # if test:
+
+    
     plt.legend()
 
 #interactive plot with boken; set up for four categories, with color palette; pass in df for either ingredient or flavor
@@ -46,7 +50,7 @@ def plot_bokeh(df,sublist,filename):
         df_sub = pd.concat([df_sub, temp],axis=0,ignore_index=True)
         lenlist.append(df_sub.shape[0])
     df_X = df_sub.drop(['cuisine','recipeName'],axis=1)
-    print(df_X.shape, lenlist)
+    print (df_X.shape, lenlist)
 
     dist = squareform(pdist(df_X, metric='cosine'))
     tsne = TSNE(metric='precomputed').fit_transform(dist)
